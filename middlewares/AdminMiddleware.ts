@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '@clerk/nextjs';
 
 const AdminMiddleware = ({ children }: {children: React.ReactNode}) => {
-  const { push, pathname } = useRouter();
+  const { push, pathname } = useRouter() as any;
   const session = useSession();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const AdminMiddleware = ({ children }: {children: React.ReactNode}) => {
     };
 
     if (session && session.isLoaded && session.isSignedIn) {
-      getSessionData().then((sessionData) => {
+      getSessionData().then((sessionData: any) => {
         console.log('Session:', sessionData);
 
         // Now we have the session data, let's proceed with the middleware logic
