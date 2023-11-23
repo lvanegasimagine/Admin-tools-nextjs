@@ -11,6 +11,9 @@ import Loading from "./Loading";
 
 const TablesPage = () => {
 
+  //**
+  // Loading
+  //**
   // Organization data
   const { organizationList, isLoaded, setActive } = useOrganizationList();
   // Next.js router
