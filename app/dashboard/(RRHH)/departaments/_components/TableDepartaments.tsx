@@ -219,7 +219,7 @@ export const columns: ColumnDef<Payment>[] = [
     },
 ]
 
-export function DataTable() {
+export default function DepartamentsPage() {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -248,7 +248,7 @@ export function DataTable() {
     })
 
     return (
-        <div className="w-full ">
+        <div className="w-full">
             <div className="flex justify-between items-center py-4">
                 <Input
                     placeholder="Filter emails..."

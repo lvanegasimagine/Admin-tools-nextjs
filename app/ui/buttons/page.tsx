@@ -256,7 +256,7 @@ const Buttons = () => {
                   />
                 </svg>
               </span>
-              Button With Icon
+              Button With Icona
             </Link>
 
             <Link
