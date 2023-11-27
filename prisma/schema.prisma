@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model departaments {
+  departament_id          String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  departament_name        String      @db.VarChar(255)
+  departament_description String?
+  contact_phone           String?     @db.VarChar(15)
+  contact_email           String?     @db.VarChar(255)
+  employees               employees[]
+}
+
+model employees {
+  employee_id       String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  supervisor_id     String?       @db.Uuid
+  departament_id    String?       @db.Uuid
+  first_name        String        @db.VarChar(255)
+  last_name         String        @db.VarChar(255)
+  position_employee String        @db.VarChar(255)
+  phone_number      String        @db.VarChar(255)
+  hire_date         DateTime      @db.Date
+  location_employee String?       @db.VarChar(255)
+  departaments      departaments? @relation(fields: [departament_id], references: [departament_id], onUpdate: NoAction)
+  supervisors       supervisors?  @relation(fields: [supervisor_id], references: [supervisor_id], onUpdate: NoAction)
+}
+
+model supervisors {
+  supervisor_id String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  first_name    String      @db.VarChar(255)
+  last_name     String      @db.VarChar(255)
+  email         String      @db.VarChar(255)
+  phone_number  String      @db.VarChar(255)
+  employees     employees[]
+}

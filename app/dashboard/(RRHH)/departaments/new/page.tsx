@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'sonner'
 import axios from 'axios'
+import { useRouter } from 'next/navigation';
 
 const NuevoDepartamento = () => {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
@@ -15,8 +16,17 @@ const NuevoDepartamento = () => {
         }
     });
 
+    const router = useRouter()
+
     const onSubmit = handleSubmit(async (data) => {
-        console.log(data)
+        const resp = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/departaments`, data);
+
+        if (resp.status === 201) {
+            toast.success("Departamento creado")
+            reset()
+            router.push('/dashboard/departaments')
+            router.refresh();
+        }
     })
     return (
         <>
@@ -39,13 +49,13 @@ const NuevoDepartamento = () => {
                                         <span className='text-danger'>*</span> Nombre Departamento
                                     </label>
                                     <Controller control={control} name='departament_name' rules={{ required: { message: 'Este campo es requerido', value: true } }} render={({ field }) => (
-                                    <input
-                                        type="text"
-                                        autoFocus
-                                        {...field}
-                                        placeholder="Ejp: Administracion, Area Tecnica, etc"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />)} />
+                                        <input
+                                            type="text"
+                                            autoFocus
+                                            {...field}
+                                            placeholder="Ejp: Administracion, Area Tecnica, etc"
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />)} />
                                     {errors.departament_name && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.departament_name.message}</p>}
 
                                 </div>
@@ -56,13 +66,13 @@ const NuevoDepartamento = () => {
                                         Descripcion Departamento
                                     </label>
                                     <Controller control={control} name='departament_description' render={({ field }) => (
-                                    <input
-                                        type="text"
-                                        autoFocus
-                                        {...field}
-                                        placeholder="Ejp: Recursos Humanos Departamento..."
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />)} />
+                                        <input
+                                            type="text"
+                                            autoFocus
+                                            {...field}
+                                            placeholder="Ejp: Recursos Humanos Departamento..."
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />)} />
                                     {errors.departament_description && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.departament_description.message}</p>}
                                 </div>
                             </div>
@@ -72,13 +82,13 @@ const NuevoDepartamento = () => {
                                         Email
                                     </label>
                                     <Controller control={control} name='contact_email' render={({ field }) => (
-                                    <input
-                                        type="text"
-                                        autoFocus
-                                        {...field}
-                                        placeholder="Ejp: nombre@corasco.com.ni"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />)} />
+                                        <input
+                                            type="text"
+                                            autoFocus
+                                            {...field}
+                                            placeholder="Ejp: nombre@corasco.com.ni"
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />)} />
                                     {errors.contact_email && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.contact_email.message}</p>}
                                 </div>
 
@@ -87,22 +97,33 @@ const NuevoDepartamento = () => {
                                         Numero Telefonico o Extension
                                     </label>
                                     <Controller control={control} name='contact_phone' render={({ field }) => (
-                                    <input
-                                        type="text"
-                                        autoFocus
-                                        {...field}
-                                        placeholder="Ejp: 5432-6532 Ext. 1015"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />)} />
+                                        <input
+                                            type="text"
+                                            autoFocus
+                                            {...field}
+                                            placeholder="Ejp: 5432-6532 Ext. 1015"
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />)} />
                                     {errors.contact_phone && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.contact_phone.message}</p>}
                                 </div>
                             </div>
 
                             <div className='flex justify-center items-center mx-5 py-5 gap-5'>
-                                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
+                                <button type='submit' className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
+                                    <span className='mr-2'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                        </svg>
+
+                                    </span>
                                     Guardar
                                 </button>
-                                <button className="flex w-full justify-center rounded bg-danger p-3 font-medium text-gray">
+                                <button type="button" onClick={() => router.back()} className="flex w-full justify-center rounded bg-danger p-3 font-medium text-gray">
+                                    <span className='mr-2'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                        </svg>
+                                    </span>
                                     Cancelar
                                 </button>
                             </div>
