@@ -13,7 +13,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body suppressHydrationWarning={true}>
-          <Toaster position="top-right" />
+          <Toaster position="top-right" richColors/>
           {children}
         </body>
       </html>

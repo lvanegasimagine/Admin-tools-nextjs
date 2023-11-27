@@ -4,7 +4,8 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'sonner'
 import axios from 'axios'
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const NuevoDepartamento = () => {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
@@ -17,20 +18,48 @@ const NuevoDepartamento = () => {
     });
 
     const router = useRouter()
+    const params = useParams()
+
+    useEffect(() => {
+        if (params.departamentId) {
+            axios.get(`${process.env.NEXT_PUBLIC_API_URL}/departaments/${params.departamentId}`).then(res => {
+                reset(res.data)
+            }).catch((err) => {
+                console.log(err)
+                toast.error('Project Not found')
+                router.push('/dashboard/departaments')
+                router.refresh();
+            })
+        }
+    }, [params.departamentId])
+
 
     const onSubmit = handleSubmit(async (data) => {
-        const resp = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/departaments`, data);
-
-        if (resp.status === 201) {
-            toast.success("Departamento creado")
-            reset()
-            router.push('/dashboard/departaments')
-            router.refresh();
+        try {
+            if (!params.departamentId) {
+                const resp = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/departaments`, data);
+                if (resp.status === 201) {
+                    toast.success("Departamento creado")
+                    reset()
+                    router.push('/dashboard/departaments')
+                    router.refresh();
+                }
+            } else {
+                const resp = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/departaments/${params.departamentId}`, data);
+                if (resp.status === 200) {
+                    toast.success("Departamento actualizado")
+                    reset()
+                    router.push('/dashboard/departaments')
+                    router.refresh();
+                }
+            }
+        } catch (error) {
+            console.error('🚀 ~ file: page.tsx:20 ~ onSubmit ~ error:', error)
         }
     })
     return (
         <>
-            <Breadcrumb pageName="Nuevo Departamento" />
+            <Breadcrumb pageName={params.departamentId ? 'Editar Departamento' : 'Nuevo Departamento'} />
             <div className="w-full flex flex-col gap-9">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="flex justify-between items-center border-b border-stroke py-4 px-6.5 dark:border-strokedark">
@@ -83,7 +112,7 @@ const NuevoDepartamento = () => {
                                     </label>
                                     <Controller control={control} name='contact_email' render={({ field }) => (
                                         <input
-                                            type="text"
+                                            type="email"
                                             autoFocus
                                             {...field}
                                             placeholder="Ejp: nombre@corasco.com.ni"
@@ -116,7 +145,7 @@ const NuevoDepartamento = () => {
                                         </svg>
 
                                     </span>
-                                    Guardar
+                                    {params.departamentId ? 'Actualizar' : 'Crear'}
                                 </button>
                                 <button type="button" onClick={() => router.back()} className="flex w-full justify-center rounded bg-danger p-3 font-medium text-gray">
                                     <span className='mr-2'>
