@@ -111,9 +111,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               MENU
             </h3>
             <ul className="mb-6 flex flex-col gap-1.5">
-              {/* <SidebarLinkGroup
+              <SidebarLinkGroup
                 activeCondition={
-                  pathname === "/" || pathname.includes("dashboard")
+                  pathname === "/dashboard/employees" || pathname.includes("dashboard")
                 }
               >
                 {(handleClick, open) => {
@@ -122,8 +122,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                        <Link
                         href="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/" ||
-                            pathname.includes("dashboard")) &&
+                          (pathname === "/dashboard/employees" ||
+                            pathname.includes("departaments")) &&
                           "bg-graydark dark:bg-meta-4"
                         }`}
                         onClick={(e) => {
@@ -158,7 +158,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                        Dashboard
+                        RRHH
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && "rotate-180"
@@ -185,12 +185,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
                             <Link
-                              href="/"
+                              href="/dashboard/employees"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "/" && "text-white"
+                                pathname === "/dashboard/employees" && "text-white"
                               } `}
                             >
-                              eCommerce
+                              Empleados
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/dashboard/departaments"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                                pathname === "/dashboard/departaments" && "text-white"
+                              } `}
+                            >
+                              Departamentos
                             </Link>
                           </li>
                         </ul>
@@ -198,7 +208,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup> */}
+              </SidebarLinkGroup>
               <SignedIn>
                 {links.map((link) =>
                   (link.role === 'admin' && userRole === 'admin') || !link.role ? (
