@@ -1,5 +1,4 @@
 "use client"
-
 import * as React from "react"
 import { ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -7,6 +6,8 @@ import axios from "axios"
 import { columns } from "."
 import { ButtonDepartaments } from "./"
 import InputDropdownDepartaments from "./InputDropdownDepartaments"
+
+// Luis Vanegas
 export default function DepartamentsPage() {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
