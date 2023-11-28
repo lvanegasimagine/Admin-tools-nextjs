@@ -1,18 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDownIcon } from "@radix-ui/react-icons"
 import { ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import axios from "axios"
 import { columns } from "."
 import { ButtonDepartaments } from "./"
 import InputDropdownDepartaments from "./InputDropdownDepartaments"
-import { useRouter } from "next/navigation"
-
 export default function DepartamentsPage() {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -20,9 +14,6 @@ export default function DepartamentsPage() {
     const [rowSelection, setRowSelection] = React.useState({})
     const [data, setData] = React.useState([])
     const [error, setError] = React.useState(false)
-    const router = useRouter()
-    console.log("🚀 ~ file: TableDepartaments.tsx:24 ~ DepartamentsPage ~ data:", data)
-
     const table = useReactTable({
         data,
         columns,
