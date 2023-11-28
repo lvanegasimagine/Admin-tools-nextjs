@@ -97,7 +97,6 @@ const NuevoDepartamento = () => {
                                     <Controller control={control} name='departament_description' render={({ field }) => (
                                         <input
                                             type="text"
-                                            autoFocus
                                             {...field}
                                             placeholder="Ejp: Recursos Humanos Departamento..."
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -113,7 +112,6 @@ const NuevoDepartamento = () => {
                                     <Controller control={control} name='contact_email' render={({ field }) => (
                                         <input
                                             type="email"
-                                            autoFocus
                                             {...field}
                                             placeholder="Ejp: nombre@corasco.com.ni"
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -128,7 +126,6 @@ const NuevoDepartamento = () => {
                                     <Controller control={control} name='contact_phone' render={({ field }) => (
                                         <input
                                             type="text"
-                                            autoFocus
                                             {...field}
                                             placeholder="Ejp: 5432-6532 Ext. 1015"
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"

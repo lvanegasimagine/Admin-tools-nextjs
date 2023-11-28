@@ -8,7 +8,7 @@ datasource db {
 }
 
 model departaments {
-  departament_id          String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  departament_id          String      @id @default(uuid()) @db.Uuid
   departament_name        String      @db.VarChar(255)
   departament_description String?
   contact_phone           String?     @db.VarChar(15)
@@ -17,7 +17,7 @@ model departaments {
 }
 
 model employees {
-  employee_id       String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  employee_id       String        @id @default(uuid()) @db.Uuid
   supervisor_id     String?       @db.Uuid
   departament_id    String?       @db.Uuid
   first_name        String        @db.VarChar(255)
@@ -31,10 +31,10 @@ model employees {
 }
 
 model supervisors {
-  supervisor_id String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  supervisor_id String      @id @default(uuid()) @db.Uuid
   first_name    String      @db.VarChar(255)
   last_name     String      @db.VarChar(255)
   email         String      @db.VarChar(255)
-  phone_number  String      @db.VarChar(255)
+  phone_number  String?     @db.VarChar(100)
   employees     employees[]
 }
