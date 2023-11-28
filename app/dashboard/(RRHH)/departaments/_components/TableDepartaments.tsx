@@ -13,8 +13,6 @@ import { ButtonDepartaments } from "./"
 import InputDropdownDepartaments from "./InputDropdownDepartaments"
 import { useRouter } from "next/navigation"
 
-const API = process.env.NEXT_PUBLIC_API_URL!
-
 export default function DepartamentsPage() {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -23,6 +21,7 @@ export default function DepartamentsPage() {
     const [data, setData] = React.useState([])
     const [error, setError] = React.useState(false)
     const router = useRouter()
+    console.log("🚀 ~ file: TableDepartaments.tsx:24 ~ DepartamentsPage ~ data:", data)
 
     const table = useReactTable({
         data,
@@ -49,7 +48,7 @@ export default function DepartamentsPage() {
 
     async function getDepartamentos() {
         try {
-            const { status, statusText, data } = await axios.get(`${API}/departaments`);
+            const { status, statusText, data } = await axios.get(`/api/v1/departaments`);
 
             if (status === 200 && statusText === 'OK') {
                 setData(data)

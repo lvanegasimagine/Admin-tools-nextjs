@@ -84,7 +84,7 @@ export const columns: ColumnDef<departaments>[] = [
                         label: 'Eliminar',
                         onClick: async () => {
                             try {
-                                const { status, statusText } = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/departaments/${id}`)
+                                const { status, statusText } = await axios.delete(`/api/v1/departaments/${id}`)
 
                                 if (status === 200 && statusText === 'OK') {
                                     toast.success('Departamento Eliminado')

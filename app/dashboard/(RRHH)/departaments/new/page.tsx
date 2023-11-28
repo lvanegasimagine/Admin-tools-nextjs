@@ -22,7 +22,7 @@ const NuevoDepartamento = () => {
 
     useEffect(() => {
         if (params.departamentId) {
-            axios.get(`${process.env.NEXT_PUBLIC_API_URL}/departaments/${params.departamentId}`).then(res => {
+            axios.get(`/api/v1/departaments/${params.departamentId}`).then(res => {
                 reset(res.data)
             }).catch((err) => {
                 console.log(err)
@@ -37,7 +37,7 @@ const NuevoDepartamento = () => {
     const onSubmit = handleSubmit(async (data) => {
         try {
             if (!params.departamentId) {
-                const resp = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/departaments`, data);
+                const resp = await axios.post('/api/v1/departaments', data);
                 if (resp.status === 201) {
                     toast.success("Departamento creado")
                     reset()
@@ -45,7 +45,7 @@ const NuevoDepartamento = () => {
                     router.refresh();
                 }
             } else {
-                const resp = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/departaments/${params.departamentId}`, data);
+                const resp = await axios.put(`/api/v1/departaments/${params.departamentId}`, data);
                 if (resp.status === 200) {
                     toast.success("Departamento actualizado")
                     reset()
