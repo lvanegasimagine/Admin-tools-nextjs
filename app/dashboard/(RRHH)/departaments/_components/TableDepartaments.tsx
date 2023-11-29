@@ -40,11 +40,9 @@ export default function DepartamentsPage() {
 
     async function getDepartamentos() {
         try {
-            const { status, statusText, data } = await axios.get(`/api/departaments`);
-
-            if (status === 200 && statusText === 'OK') {
-                setData(data)
-            }
+            const res = await fetch("/api/chapter");
+            const data = await res.json();
+            setData(data);
         } catch (error: any) {
             // Manejar el error aquí
             if (error.response) {
@@ -60,15 +58,6 @@ export default function DepartamentsPage() {
             }
         }
     }
-
-    // if (error) {
-    //     console.log("🚀 ~ file: TableDepartaments.tsx:69 ~ DepartamentsPage ~ error:", error)
-    //     return (
-    //         <div className='flex justify-center h-[calc(100vh-14rem)] items-center text-3xl'>
-    //             <p className='text-slate-500'>Red Caida Ponerse en Contacto con Informatica</p>
-    //         </div>
-    //     )
-    // }
 
     return (
         <div>
