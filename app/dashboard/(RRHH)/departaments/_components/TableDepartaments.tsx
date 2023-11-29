@@ -40,12 +40,10 @@ export default function DepartamentsPage() {
 
     async function getDepartamentos() {
         try {
-            const { status, statusText, data } = await axios.get(`/api/v1/departaments`);
+            const { status, statusText, data } = await axios.get(`/api/departaments`);
 
             if (status === 200 && statusText === 'OK') {
                 setData(data)
-            } else {
-                setError(true)
             }
         } catch (error: any) {
             // Manejar el error aquí
@@ -56,27 +54,25 @@ export default function DepartamentsPage() {
             } else if (error.request) {
                 // La solicitud fue hecha pero no se recibió respuesta
                 console.error('No se recibió respuesta del servidor:', error.request);
-                setError(true)
             } else {
                 // Ocurrió un error durante la solicitud
                 console.error('Error en la solicitud:', error.message);
-                setError(true)
             }
         }
     }
 
-    if (error) {
-        console.log("🚀 ~ file: TableDepartaments.tsx:69 ~ DepartamentsPage ~ error:", error)
-        return (
-            <div className='flex justify-center h-[calc(100vh-14rem)] items-center text-3xl'>
-                <p className='text-slate-500'>Red Caida Ponerse en Contacto con Informatica</p>
-            </div>
-        )
-    }
+    // if (error) {
+    //     console.log("🚀 ~ file: TableDepartaments.tsx:69 ~ DepartamentsPage ~ error:", error)
+    //     return (
+    //         <div className='flex justify-center h-[calc(100vh-14rem)] items-center text-3xl'>
+    //             <p className='text-slate-500'>Red Caida Ponerse en Contacto con Informatica</p>
+    //         </div>
+    //     )
+    // }
 
     return (
         <div>
-            {data && <div className="w-full">
+            <div className="w-full">
                 <InputDropdownDepartaments table={table} />
                 <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
                     <div className="max-w-full overflow-x-auto">
@@ -131,8 +127,7 @@ export default function DepartamentsPage() {
                     </div>
                 </div>
                 <ButtonDepartaments table={table} />
-            </div>}
+            </div>
         </div>
-
     )
 }
