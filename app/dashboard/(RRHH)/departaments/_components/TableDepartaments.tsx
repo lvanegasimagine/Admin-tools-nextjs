@@ -40,7 +40,7 @@ export default function DepartamentsPage() {
 
     async function getDepartamentos() {
         try {
-            const res = await fetch("/api/chapter");
+            const res = await fetch("/api/departaments");
             const data = await res.json();
             setData(data);
         } catch (error: any) {
