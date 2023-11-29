@@ -142,7 +142,7 @@ const NuevoDepartamento = () => {
                                         </svg>
 
                                     </span>
-                                    {params.departamentId ? 'Actualizar' : 'Crear'}
+                                    {params.departamentId ? 'Actualizar' : 'Guardar'}
                                 </button>
                                 <button type="button" onClick={() => router.back()} className="flex w-full justify-center rounded bg-danger p-3 font-medium text-gray">
                                     <span className='mr-2'>

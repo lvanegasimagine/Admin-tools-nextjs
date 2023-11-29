@@ -66,6 +66,7 @@ export default function DepartamentsPage() {
     }
 
     if (error) {
+        console.log("🚀 ~ file: TableDepartaments.tsx:69 ~ DepartamentsPage ~ error:", error)
         return (
             <div className='flex justify-center h-[calc(100vh-14rem)] items-center text-3xl'>
                 <p className='text-slate-500'>Red Caida Ponerse en Contacto con Informatica</p>
