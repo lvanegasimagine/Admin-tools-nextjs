@@ -6,9 +6,10 @@ import { toast } from 'sonner'
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Loading from '@/app/dashboard/tables/Loading';
 
 const NuevoDepartamento = () => {
-    const { control, handleSubmit, formState: { errors }, reset } = useForm({
+    const { control, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
         values: {
             departament_name: '',
             departament_description: '',
@@ -17,13 +18,17 @@ const NuevoDepartamento = () => {
         }
     });
 
+    const [isLoading, setIsLoading] = React.useState(false)
+
     const router = useRouter()
     const params = useParams()
 
     useEffect(() => {
+        setIsLoading(true)
         if (params.departamentId) {
             axios.get(`/api/v1/departaments/${params.departamentId}`).then(res => {
                 reset(res.data)
+                setIsLoading(false)
             }).catch((err) => {
                 console.log(err)
                 toast.error('Project Not found')
@@ -33,17 +38,22 @@ const NuevoDepartamento = () => {
         }
     }, [params.departamentId])
 
+    if(isLoading && params.departmentId){
+        return <Loading />
+    }
 
     const onSubmit = handleSubmit(async (data) => {
         try {
+            setIsLoading(true)
             if (!params.departamentId) {
                 const resp = await axios.post('/api/v1/departaments', data);
                 if (resp.status === 201) {
-                    toast.success("Departamento creado")
+                    toast.info("Departamento creado")
                     reset()
                     router.push('/dashboard/departaments')
                     router.refresh();
                 }
+                setIsLoading(false)
             } else {
                 const resp = await axios.put(`/api/v1/departaments/${params.departamentId}`, data);
                 if (resp.status === 200) {
@@ -133,14 +143,12 @@ const NuevoDepartamento = () => {
                                     {errors.contact_phone && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.contact_phone.message}</p>}
                                 </div>
                             </div>
-
                             <div className='flex justify-center items-center mx-5 py-5 gap-5'>
-                                <button type='submit' className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
+                                <button type='submit' className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray" disabled={isSubmitting}>
                                     <span className='mr-2'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                                         </svg>
-
                                     </span>
                                     {params.departamentId ? 'Actualizar' : 'Guardar'}
                                 </button>

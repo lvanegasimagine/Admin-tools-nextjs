@@ -2,19 +2,18 @@
 import * as React from "react"
 import { ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import axios from "axios"
 import { columns } from "."
 import { ButtonDepartaments } from "./"
 import InputDropdownDepartaments from "./InputDropdownDepartaments"
+import Loading from "../loading"
 
-// Luis Vanegas
 export default function DepartamentsPage() {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
     const [data, setData] = React.useState([])
-    const [error, setError] = React.useState(false)
+    const [isLoading, setIsLoading] = React.useState(false)
     const table = useReactTable({
         data,
         columns,
@@ -39,24 +38,27 @@ export default function DepartamentsPage() {
     }, [])
 
     async function getDepartamentos() {
+        setIsLoading(true)
         try {
             const res = await fetch("/api/departaments");
             const data = await res.json();
             setData(data);
+            setIsLoading(false)
         } catch (error: any) {
-            // Manejar el error aquí
             if (error.response) {
-                // La solicitud fue hecha y el servidor respondió con un estado diferente de 2xx
                 console.error('Respuesta del servidor con error:', error.response.data);
-                console.error('Código de estado:', error.response.status);
             } else if (error.request) {
-                // La solicitud fue hecha pero no se recibió respuesta
                 console.error('No se recibió respuesta del servidor:', error.request);
             } else {
-                // Ocurrió un error durante la solicitud
                 console.error('Error en la solicitud:', error.message);
             }
         }
+    }
+
+    if (isLoading) {
+        return (
+            <Loading />
+        )
     }
 
     return (
@@ -107,7 +109,7 @@ export default function DepartamentsPage() {
                                             colSpan={columns.length}
                                             className="h-24 text-center"
                                         >
-                                            No results.
+                                            No Hay resultados
                                         </TableCell>
                                     </TableRow>
                                 )}
