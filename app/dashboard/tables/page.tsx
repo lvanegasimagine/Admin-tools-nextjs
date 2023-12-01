@@ -51,9 +51,10 @@ const TablesPage = () => {
 
   // Get the organization details of the admin
   const adminOrganization = isLoaded
-    ? organizationList.find((org) => org.membership.role === 'admin')
-    : null;
-
+  ? organizationList.find((org) => org.membership.role === 'admin')
+  : null;
+  
+  console.info("🚀 ~ file: page.tsx:54 ~ TablesPage ~ adminOrganization:", adminOrganization)
   // Set the admin details
   const adminName = adminOrganization
     ? adminOrganization.organization.name
@@ -65,6 +66,8 @@ const TablesPage = () => {
     ? adminOrganization.organization.imageUrl
     : '/admin.jpeg'; // Replace with the default admin image URL or any other fallback image
 
+
+    console.log({ adminName, adminRole, adminImageUrl})
   // Render the loader while waiting for organization data to load
   if (showLoader) {
     return <Loading />;

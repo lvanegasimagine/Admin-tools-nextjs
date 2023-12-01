@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
-const ButtonDepartaments = ({ table }: { table: any }) => {
+const ButtonsPagination = ({ table }: { table: any }) => {
     return (
         <div className="flex items-center justify-end space-x-2 py-4">
             <div className="flex-1 text-sm text-muted-foreground">
@@ -32,4 +32,4 @@ const ButtonDepartaments = ({ table }: { table: any }) => {
     )
 }
 
-export default ButtonDepartaments
+export default ButtonsPagination

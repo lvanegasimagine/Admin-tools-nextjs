@@ -5,14 +5,20 @@ import { ChevronDownIcon } from "@radix-ui/react-icons"
 
 import React from 'react'
 
-const InputDropdownDepartaments = ({ table }: any) => {
+interface InputDropdownProps {
+    table: any
+    placeholder: string,
+    value: string,
+}
+
+const InputDropdownDepartaments = ({ table, placeholder, value }: InputDropdownProps) => {
     return (
         <div className="flex justify-between items-center py-4">
             <Input
-                placeholder="Filtrar emails..."
-                value={(table.getColumn("contact_email")?.getFilterValue() as string) ?? ""}
+                placeholder={placeholder}
+                value={(table.getColumn(value)?.getFilterValue() as string) ?? ""}
                 onChange={(event: any) =>
-                    table.getColumn("contact_email")?.setFilterValue(event.target.value)
+                    table.getColumn(value)?.setFilterValue(event.target.value)
                 }
                 className="max-w-sm dark:border-strokedark dark:bg-meta-4"
             />

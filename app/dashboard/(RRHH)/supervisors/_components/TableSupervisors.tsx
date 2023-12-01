@@ -1,18 +1,17 @@
-"use client"
-import * as React from "react"
-import { ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { columns } from "."
-import Loading from "@/app/dashboard/tables/Loading"
-import { ButtonsPagination, InputDropdown } from "@/components/DataTable"
+import { ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
+import React, { useState, useEffect } from 'react'
+import { columns } from '.'
+import Loading from '@/app/dashboard/tables/Loading'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { InputDropdown, ButtonsPagination } from '@/components/DataTable'
 
-export default function DepartamentsPage() {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
-    const [data, setData] = React.useState([])
-    const [isLoading, setIsLoading] = React.useState(false)
+const TableSupervisors = () => {
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+    const [rowSelection, setRowSelection] = useState({})
+    const [data, setData] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const table = useReactTable({
         data,
         columns,
@@ -32,14 +31,14 @@ export default function DepartamentsPage() {
         },
     })
 
-    React.useEffect(() => {
-        getDepartamentos()
+    useEffect(() => {
+        getSupervisores()
     }, [])
 
-    async function getDepartamentos() {
+    async function getSupervisores() {
         setIsLoading(true)
         try {
-            const res = await fetch("/api/departaments");
+            const res = await fetch("/api/v1/supervisors");
             const data = await res.json();
             setData(data);
             setIsLoading(false)
@@ -59,11 +58,10 @@ export default function DepartamentsPage() {
             <Loading />
         )
     }
-
     return (
         <div>
             <div className="w-full">
-                <InputDropdown table={table} placeholder="Filtrar Email..." value="contact_email"/>
+                <InputDropdown table={table} placeholder="Filtrar por nombre..." value="first_name"/>
                 <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
                     <div className="max-w-full overflow-x-auto">
                         <Table>
@@ -116,8 +114,10 @@ export default function DepartamentsPage() {
                         </Table>
                     </div>
                 </div>
-                <ButtonsPagination table={table} />
+                <ButtonsPagination table={table}/>
             </div>
         </div>
     )
 }
+
+export default TableSupervisors
