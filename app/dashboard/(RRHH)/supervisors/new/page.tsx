@@ -1,77 +1,76 @@
 'use client'
-import React from 'react'
+import Loading from '@/app/dashboard/tables/Loading'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import { useForm, Controller } from 'react-hook-form';
-import { toast } from 'sonner'
 import axios from 'axios'
-import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import Loading from '@/app/dashboard/tables/Loading';
+import { useParams, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-const NuevoDepartamento = () => {
+const NuevoSupervisor = () => {
     const { control, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
         values: {
-            departament_name: '',
-            departament_description: '',
-            contact_email: '',
-            contact_phone: '',
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone_number: ''
         }
-    });
-
-    const [isLoading, setIsLoading] = React.useState(false)
+    })
+    const [isLoading, setIsLoading] = useState(false)
 
     const router = useRouter()
     const params = useParams()
 
     useEffect(() => {
         setIsLoading(true)
-        if (params.departamentId) {
-            axios.get(`/api/v1/departaments/${params.departamentId}`).then(res => {
+        if (params.supervisorId) {
+            axios.get(`/api/v1/supervisors/${params.supervisorId}`).then((res) => {
+                console.log(res.data)
                 reset(res.data)
                 setIsLoading(false)
             }).catch((err) => {
                 console.log(err)
-                toast.error('Project Not found')
-                router.push('/dashboard/departaments')
+                toast.error('Supervisor Not found')
+                router.push('/dashboard/supervisors')
                 router.refresh();
             })
         }
-    }, [params.departamentId])
+    }, [params.supervisorId])
 
-    if (isLoading && params.departmentId) {
+    if (isLoading && params.supervisorId) {
         return <Loading />
     }
 
     const onSubmit = handleSubmit(async (data) => {
         try {
             setIsLoading(true)
-            if (!params.departamentId) {
-                const resp = await axios.post('/api/v1/departaments', data);
-                if (resp.status === 201) {
-                    toast.success("Departamento creado")
+            if(!params.supervisorId){
+                const resp = await axios.post('/api/v1/supervisors', data)
+                if(resp.status === 201){
+                    toast.success('Supervisor created successfully')
                     reset()
-                    router.push('/dashboard/departaments')
+                    router.push('/dashboard/supervisors')
                     router.refresh();
                 }
-                setIsLoading(false)
-            } else {
-                const resp = await axios.put(`/api/v1/departaments/${params.departamentId}`, data);
-                if (resp.status === 200) {
-                    toast.info("Departamento actualizado")
+            }else{
+                const resp = await axios.put(`/api/v1/supervisors/${params.supervisorId}`, data)
+
+                if(resp.status === 200){
+                    toast.info('Supervisor updated successfully')
                     reset()
-                    router.push('/dashboard/departaments')
+                    router.push('/dashboard/supervisors')
                     router.refresh();
                 }
             }
         } catch (error) {
-            console.error('🚀 ~ file: page.tsx:20 ~ onSubmit ~ error:', error)
+            console.error(error)
         }
     })
     return (
         <>
-            <Breadcrumb pageName={params.departamentId ? 'Editar Departamento' : 'Nuevo Departamento'} />
+            <Breadcrumb pageName={params.supervisorId ? 'Editar Supervisor' : 'Nuevo Supervisor'} />
             <div className="w-full flex flex-col gap-9">
-                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className='rounded-md border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                     <div className="flex justify-between items-center border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                         <h3 className="font-medium text-black dark:text-white">
                             Rellenar Formato
@@ -85,58 +84,58 @@ const NuevoDepartamento = () => {
                             <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                                 <div className="w-full xl:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
-                                        <span className='text-danger'>*</span> Nombre Departamento
+                                        <span className='text-danger'>*</span> Nombre Supervisor
                                     </label>
-                                    <Controller control={control} name='departament_name' rules={{ required: { message: 'Este campo es requerido', value: true } }} render={({ field }) => (
+                                    <Controller control={control} name='first_name' rules={{ required: { message: 'Este campo es requerido', value: true } }} render={({ field }) => (
                                         <input
                                             type="text"
                                             autoFocus
                                             {...field}
-                                            placeholder="Ejp: Administracion, Area Tecnica, etc"
+                                            placeholder="Ejp: John..."
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />)} />
-                                    {errors.departament_name && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.departament_name.message}</p>}
+                                    {errors.first_name && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.first_name.message}</p>}
                                 </div>
                                 <div className="w-full xl:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
-                                        Descripcion Departamento
+                                        <span className='text-danger'>*</span> Apellido Supervisor
                                     </label>
-                                    <Controller control={control} name='departament_description' render={({ field }) => (
+                                    <Controller control={control} name='last_name' rules={{ required: { message: 'Este campo es requerido', value: true } }} render={({ field }) => (
                                         <input
                                             type="text"
                                             {...field}
-                                            placeholder="Ejp: Recursos Humanos Departamento..."
+                                            placeholder="Ejp: Doe..."
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />)} />
-                                    {errors.departament_description && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.departament_description.message}</p>}
+                                    {errors.last_name && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.last_name.message}</p>}
                                 </div>
                             </div>
                             <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                                 <div className="w-full xl:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
-                                        Email
+                                        <span className='text-danger'>*</span> Email
                                     </label>
-                                    <Controller control={control} name='contact_email' render={({ field }) => (
-                                        <input
-                                            type="email"
-                                            {...field}
-                                            placeholder="Ejp: nombre@corasco.com.ni"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                        />)} />
-                                    {errors.contact_email && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.contact_email.message}</p>}
-                                </div>
-                                <div className="w-full xl:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Numero Telefonico o Extension
-                                    </label>
-                                    <Controller control={control} name='contact_phone' render={({ field }) => (
+                                    <Controller control={control} name='email' rules={{ required: { message: 'Este campo es requerido', value: true } }} render={({ field }) => (
                                         <input
                                             type="text"
                                             {...field}
-                                            placeholder="Ejp: 5432-6532 Ext. 1015"
+                                            placeholder="Ejp: email@domain.com"
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />)} />
-                                    {errors.contact_phone && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.contact_phone.message}</p>}
+                                    {errors.email && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.email.message}</p>}
+                                </div>
+                                <div className="w-full xl:w-1/2">
+                                    <label className="mb-2.5 block text-black dark:text-white">
+                                        <span className='text-danger'>*</span> Telefono
+                                    </label>
+                                    <Controller control={control} name='phone_number' rules={{ required: { message: 'Este campo es requerido', value: true } }} render={({ field }) => (
+                                        <input
+                                            type="text"
+                                            {...field}
+                                            placeholder="Ejp: 1265-8932 Ext.1015"
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        />)} />
+                                    {errors.phone_number && <p className='text-xs text-danger mt-2 mx-4 font-medium'>{errors.phone_number.message}</p>}
                                 </div>
                             </div>
                             <div className='flex justify-center items-center mx-5 py-5 gap-5'>
@@ -146,7 +145,7 @@ const NuevoDepartamento = () => {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                                         </svg>
                                     </span>
-                                    {params.departamentId ? 'Actualizar' : 'Guardar'}
+                                    {params.supervisorId ? 'Actualizar' : 'Guardar'}
                                 </button>
                                 <button type="button" onClick={() => router.back()} className="flex w-full justify-center rounded bg-danger p-3 font-medium text-gray">
                                     <span className='mr-2'>
@@ -165,4 +164,4 @@ const NuevoDepartamento = () => {
     )
 }
 
-export default NuevoDepartamento
+export default NuevoSupervisor

@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     try {
         const { userId } = auth()
-        
+
         if(!userId) return new NextResponse("Unauthorized", { status: 401 })
 
         const supervisors = await prisma.supervisors.findMany()
@@ -19,6 +19,26 @@ export async function GET() {
         if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
             return NextResponse.json({ error: 'Supervisor not found' }, { status: 404 })
         }
+        return NextResponse.json(error, { status: 500 })
+    }
+}
+
+export async function POST(request: Request){
+    try {
+        const data = await request.json()
+
+        const { userId } = auth()
+
+        if(!userId) return new NextResponse("Unauthorized", { status: 401 })
+
+        const supervisor = await prisma.supervisors.create({
+            data
+        })
+
+        if (!supervisor) return NextResponse.json('Supervisor not created', { status: 404 })
+
+        return NextResponse.json(supervisor, { status: 201 })
+    } catch (error) {
         return NextResponse.json(error, { status: 500 })
     }
 }
